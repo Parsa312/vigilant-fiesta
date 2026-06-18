@@ -1,0 +1,38 @@
+---
+title: "Enterprise Setup"
+description: "Deploy Lightning AI for large organizations with SSO, VPC networking, audit logs, and dedicated support."
+---
+
+## Enterprise Plan Features
+
+The Enterprise tier adds capabilities required by larger organizations and regulated industries:
+
+- **Unlimited members** with granular RBAC.
+- **SSO enforcement** via SAML 2.0 or OIDC.
+- **Private networking** — deploy into your own VPC (AWS, GCP, Azure).
+- **Audit logs** — exportable event history for compliance and security reviews.
+- **Dedicated support** with a named CSM and a 4-hour SLA for critical issues.
+- **Custom contracts** — annual invoicing, BAAs, DPAs, and MSAs available.
+
+## Configuring Single Sign-On
+
+To configure SSO for your Organization:
+
+1. Go to **Settings → Security → Single Sign-On**.
+2. Select your identity provider type (SAML 2.0 or OIDC).
+3. Enter the metadata URL or manually paste the IdP certificate and endpoints.
+4. Map IdP groups to Lightning AI Organization and Teamspace roles.
+5. Test the connection with a pilot user before enforcing SSO for all members.
+
+Once SSO is enforced, password-based login is disabled for all non-owner accounts.
+
+## Private VPC Deployment
+
+For teams with data residency or network isolation requirements, Lightning AI can be deployed into a customer-managed VPC:
+
+1. Provide your cloud account ID and preferred region to your Lightning AI Solutions Engineer.
+2. Lightning AI provisions a dedicated control plane and compute cluster in your VPC.
+3. All data remains within your network boundary; no data crosses the public internet.
+4. Egress charges from your cloud provider apply at standard rates.
+
+Contact [enterprise@lightning.ai](mailto:enterprise@lightning.ai) to begin the VPC onboarding process.

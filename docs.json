@@ -1,0 +1,73 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Lightning AI",
+  "colors": {
+    "primary": "#792EE5",
+    "light": "#A855F7",
+    "dark": "#5B21B6"
+  },
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Get Started",
+        "pages": [
+          "introduction",
+          "quickstart"
+        ]
+      },
+      {
+        "group": "Concepts",
+        "pages": [
+          "concepts/organizations",
+          "concepts/teamspaces",
+          "concepts/members"
+        ]
+      },
+      {
+        "group": "Setup",
+        "pages": [
+          "setup/startups",
+          "setup/enterprise"
+        ]
+      },
+      {
+        "group": "Studio",
+        "pages": [
+          "studio/configure"
+        ]
+      },
+      {
+        "group": "Training",
+        "pages": [
+          "training/pretrain"
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "https://lightning.ai/support"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Get Started",
+      "href": "https://lightning.ai"
+    }
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/LightningAI",
+      "github": "https://github.com/Lightning-AI",
+      "linkedin": "https://www.linkedin.com/company/lightning-ai"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+---
+title: "Configure Studio"
+description: "Customize your Lightning AI Studio environment — machine types, base images, environment variables, and persistent storage."
+---
+
+## Choosing a Machine Type
+
+When creating a Studio you select the underlying compute. Options range from CPU-only instances for lightweight development to multi-GPU instances for on-demand experimentation.
+
+| Tier | vCPUs | RAM | GPUs | Best for |
+|---|---|---|---|---|
+| CPU Small | 2 | 8 GB | — | Notebooks, prototyping |
+| CPU Large | 8 | 32 GB | — | Data processing, CPU training |
+| GPU T4 | 4 | 16 GB | 1× T4 | Interactive GPU development |
+| GPU A100 | 12 | 80 GB | 1× A100 | Large model fine-tuning |
+
+You can switch machine types after creation — the Studio pauses, migrates, and resumes on the new hardware within a few minutes.
+
+## Selecting and Customizing a Base Image
+
+Base images come pre-installed with common frameworks. Available options include:
+
+- **PyTorch** (2.x with CUDA 12)
+- **TensorFlow** (2.x with CUDA 12)
+- **JAX** (latest with TPU support)
+- **Custom** — bring your own Docker image from any public or private registry
+
+To use a private image, add your registry credentials under **Teamspace → Settings → Container Registries**, then enter the image URI when creating the Studio.
+
+## Environment Variables and Secrets
+
+Store sensitive values (API keys, database URIs) as encrypted secrets rather than plain environment variables:
+
+1. Navigate to **Teamspace → Secrets → New Secret**.
+2. Enter a name (e.g., `OPENAI_API_KEY`) and value.
+3. Reference it in your Studio or Job configuration as `$OPENAI_API_KEY`.
+
+Secrets are injected at runtime and never written to disk or logs. They can be scoped to a Teamspace or shared across an Organization.

@@ -1,0 +1,47 @@
+---
+title: "Quickstart"
+description: "Create your first Lightning AI Studio and run a training job in under five minutes."
+---
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- A Lightning AI account (sign up at [lightning.ai](https://lightning.ai))
+- A web browser — no local installation required
+
+## Step 1: Create a Studio
+
+A Studio is your cloud development environment. To create one:
+
+1. Log in and navigate to your Teamspace.
+2. Click **New Studio** and choose a base image (e.g., PyTorch 2.x).
+3. Select a machine type — start with a CPU instance for exploration.
+4. Click **Launch**. Your Studio will be ready in seconds.
+
+## Step 2: Run Your First Script
+
+Once inside the Studio terminal, install dependencies and run a script:
+
+```bash
+pip install lightning
+python -c "import lightning; print(lightning.__version__)"
+```
+
+You can also open the built-in JupyterLab interface from the Studio toolbar.
+
+## Step 3: Submit a Training Job
+
+To scale beyond a single machine, submit a job from the Studio terminal:
+
+```bash
+lightning run model train.py --accelerator gpu --devices 4
+```
+
+Monitor progress in the **Jobs** tab of your Teamspace dashboard.
+
+## Next Steps
+
+- Learn about [Organizations](/concepts/organizations) and how access is structured.
+- Configure your Studio for a team in [Studio Configuration](/studio/configure).
+- Scale to multi-node training with [Pretraining](/training/pretrain).
