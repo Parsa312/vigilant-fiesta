@@ -1,33 +1,34 @@
 ---
 title: "Use a model API"
-description: "Call a hosted model with a single request — no Studio required."
+description: "Make a request to a model that Lightning AI hosts."
 ---
 
-Lightning AI hosts models you can query directly via API. Every account includes 30 million free tokens per month. You don't need a Studio to get started.
+Lightning AI hosts models you can call directly with the API. You can develop on Lightning AI from within your own
 
 ## Before you begin
 
-Retrieve your API key from the Lightning AI dashboard.
+Retrieve your API key from the Lightning AI dashboard. To retrieve your key:
 
-## Option 1: litAI SDK
+1. Select the icon for your account in the top-left corner.
+2. Select **Keys**.
+3. Select icon next to the key to copy it.
 
-litAI is Lightning's Python SDK for model inference.
+You interact with models using the litai Python SDK.
 
-1. Install litAI.
+Use the following command to install it.
 
-   ```bash
-   pip install litai
-   ```
+```bash
+pip install litai
+```
 
-2. Set your API key as an environment variable or pass it directly in your code.
 
-3. Send a request to a model.
+After you've installed the library, you can use the following code to make a request.
 
-{/* TODO: verify current model list and endpoint */}
-
-## Option 2: OpenAI Python SDK
-
-Lightning AI is compatible with the OpenAI Python SDK. If you already use it, you can point it at the Lightning AI endpoint without changing your code structure.
+```python
+from litai import LLM
+llm = LLM(model="openai/gpt-5", api_key="<LIGHTNING_API_KEY>")
+print(llm.chat("Hello, world!"))
+```
 
 {/* TODO: verify current model list and endpoint */}
 
