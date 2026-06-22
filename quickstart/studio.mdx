@@ -1,0 +1,41 @@
+---
+title: "Create a Studio"
+sidebarTitle: "Create a Studio"
+description: "Set up your first Lightning AI Studio and run code on a free CPU instance."
+---
+
+A Studio is a persistent cloud environment that works like a local dev machine. Everything you install or configure is saved across restarts, and Studios auto-sleep when idle so you're not charged for idle time.
+
+The first 4-CPU instance on any cloud is always free.
+
+## Steps
+
+1. Go to [lightning.ai](https://lightning.ai) and sign in. If you don't have an account, see [Create an account](/create-account).
+
+2. Click **New Studio**.
+
+3. Select a Studio type.
+
+   | Studio type | Description |
+   |---|---|
+   | AI development | General-purpose coding environment. Connect from your local IDE, train models, and more. |
+   | Python | Specialized for Python development with faster cold starts. |
+   | ComfyUI | Generate images, video, and audio. |
+   | Streamlit App | Build and iterate on interactive Streamlit apps. |
+   | OpenClaw | Deploy OpenClaw on a Studio. |
+   | Prep data | Download and process datasets. For distributed processing, install the Data Preparation plugin. |
+   | Web app | Develop web apps using React templates and the ports plugin. |
+   | Machine learning | Pre-configured with Streamlit and Gradio examples. |
+
+4. Choose a machine. Studios default to a free CPU instance (4, 8, or 16 cores). You can switch to a GPU at any time without changing your environment.
+
+5. Open your environment. From the Studio toolbar, select an IDE such as **VSCode** or **JupyterLab** to open it in your browser. To use a local IDE such as VSCode, Cursor, or PyCharm, connect via SSH using the credentials in the Studio toolbar.
+
+<Tip>Install your dependencies on CPU first. Switch to a GPU only when you're ready to run — this avoids unnecessary GPU charges during setup.</Tip>
+
+{/* TODO: add verified code example */}
+
+## Next steps
+
+- [Configure your Studio](/studio/configure) — adjust machine type, environment variables, and storage.
+- [Pretrain a model](/training/pretrain) — run a distributed training job from your Studio.

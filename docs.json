@@ -14,7 +14,11 @@
         "group": "Get Started",
         "pages": [
           "introduction",
-          "quickstart"
+          "create-account",
+          "quickstart",
+          "quickstart/studio",
+          "quickstart/model-apis",
+          "quickstart/notebooks"
         ]
       },
       {

@@ -1,47 +1,18 @@
 ---
 title: "Quickstart"
-description: "Create your first Lightning AI Studio and run a training job in under five minutes."
+description: "Choose how you want to get started with Lightning AI."
 ---
 
-## Prerequisites
+Lightning AI gives you several ways to start building. Most users begin with a Studio — a persistent cloud environment where you can write code, run models, and deploy services. If you want to call a model without setting up an environment, you can use the model APIs directly. If you prefer notebooks, JupyterLab is available in the browser from any Studio.
 
-Before you begin, make sure you have:
-
-- A Lightning AI account (sign up at [lightning.ai](https://lightning.ai))
-- A web browser — no local installation required
-
-## Step 1: Create a Studio
-
-A Studio is your cloud development environment. To create one:
-
-1. Log in and navigate to your Teamspace.
-2. Click **New Studio** and choose a base image (e.g., PyTorch 2.x).
-3. Select a machine type — start with a CPU instance for exploration.
-4. Click **Launch**. Your Studio will be ready in seconds.
-
-## Step 2: Run Your First Script
-
-Once inside the Studio terminal, install dependencies and run a script:
-
-```bash
-pip install lightning
-python -c "import lightning; print(lightning.__version__)"
-```
-
-You can also open the built-in JupyterLab interface from the Studio toolbar.
-
-## Step 3: Submit a Training Job
-
-To scale beyond a single machine, submit a job from the Studio terminal:
-
-```bash
-lightning run model train.py --accelerator gpu --devices 4
-```
-
-Monitor progress in the **Jobs** tab of your Teamspace dashboard.
-
-## Next Steps
-
-- Learn about [Organizations](/concepts/organizations) and how access is structured.
-- Configure your Studio for a team in [Studio Configuration](/studio/configure).
-- Scale to multi-node training with [Pretraining](/training/pretrain).
+<CardGroup cols={3}>
+  <Card title="Create a Studio" icon="bolt" href="/quickstart/studio">
+    Set up a persistent cloud dev environment. Starts on a free CPU instance.
+  </Card>
+  <Card title="Use model APIs" icon="code" href="/quickstart/model-apis">
+    Send a request to a hosted model. No Studio required. 30M free tokens per month.
+  </Card>
+  <Card title="Run a notebook" icon="book-open" href="/quickstart/notebooks">
+    Open JupyterLab in your browser and start working immediately.
+  </Card>
+</CardGroup>
