@@ -16,43 +16,26 @@ Instead of stitching together disconnected tools in a traditional cloud, you can
 - Build agents
 - Create AI applications
 
-Lightning AI provides you with a Studio.  A Studio is an interactive, cloud-based environment that behaves like a local dev machine — except everything you install or configure persists, even after it sleeps.
+Lightning AI provides you with a Studio. A Studio is an interactive, cloud-based environment that behaves like a local dev machine — except everything you install or configure persists, even after it sleeps.
 
 You can use a Studio to:
 
-Build and iterate, with GPUs available on demand
-Set breakpoints and debug live API requests
-Pick up exactly where you left off, with your environment intact
-Share your work with teammates and stakeholders
+- Build and iterate, with GPUs available on demand
+- Set breakpoints and debug live API requests
+- Pick up exactly where you left off, with your environment intact
+- Share your work with teammates and stakeholders
 
 When it's ready, you can deploy that same environment and scale it to your needs.
 
 ## Core concepts
 
-**[Studios](/studio/configure)** are persistent, cloud-based development environments. A Studio works like your local machine — install packages, run servers, expose ports, use your own IDE — but it stays on, scales to 16 GPUs, and can be shared or cloned by teammates. When a prototype is ready, the Studio can be deployed as a snapshot without changing environments.
+**[Studios](/studio/configure)** are persistent, cloud-based development environments. A Studio works like your local machine — install packages, run servers, expose ports, and use your own IDE. It stays on and can be shared or cloned by teammates. When a prototype is ready, you can deploy the Studio as a snapshot without changing environments.
 
-**[Teamspaces](/concepts/teamspaces)** group the people, Studios, data, and compute for a project under one boundary. They handle access control, compute budgets, and resource isolation so teams can collaborate without stepping on each other.
+**[Organizations](/concepts/organizations)** are the top-level account boundary on Lightning, grouping teamspaces, members, cloud accounts, and billing. Each organization is subdivided into Teamspaces for different projects or teams.
+
+**[Teamspaces](/concepts/teamspaces)** group the people, Studios, data, and compute for a project under one boundary. Teamspaces handle access control, compute budgets, and resource isolation so teams can collaborate without stepping on each other.
 
 **[Training](/training/pretrain)** provides multi-node GPU clusters for pretraining and fine-tuning. Jobs run on auto-provisioned infrastructure with built-in checkpointing and fault tolerance.
 
 **Inference** gives models a production endpoint — either via Lightning-hosted model APIs or custom containers you deploy yourself.
 
-## Development lifecycle
-
-Lightning is designed around three stages:
-
-1. **Build** — develop interactively in a Studio against live data. Iterate until it works.
-2. **Deploy** — snapshot the Studio and run it as a standalone service on a single machine.
-3. **Scale** — break the system into a distributed pipeline where each component autoscales independently.
-
-This lets you move fast early and add infrastructure complexity only when the product demands it.
-
-## Docs navigation
-
-| Section | What you'll find |
-|---|---|
-| [Quickstart](/quickstart) | Up and running in under five minutes |
-| [Concepts](/concepts/organizations) | Orgs, teamspaces, and member roles |
-| [Setup](/setup/startups) | Onboarding for startups and enterprise |
-| [Studio](/studio/configure) | Configuring your cloud dev environment |
-| [Training](/training/pretrain) | Running distributed training jobs |
