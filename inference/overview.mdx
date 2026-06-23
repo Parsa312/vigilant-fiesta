@@ -1,0 +1,26 @@
+---
+title: "Inference"
+description: "Deploy models and serve APIs on Lightning AI."
+---
+
+Lightning AI gives you three ways to run inference in production, ranging from zero-code model deployment to fully custom containers.
+
+<CardGroup cols={3}>
+  <Card title="Turn-key models" icon="rocket" href="/inference/turn-key-models">
+    Deploy a model from the AI Hub in one click. Autoscales to zero when idle.
+  </Card>
+  <Card title="Deploy a Studio" icon="bolt" href="/inference/deploy-studio">
+    Snapshot your working Studio and serve it as a production API — no Docker, no YAML.
+  </Card>
+  <Card title="Deploy a container" icon="docker" href="/inference/deploy-containers">
+    Deploy any Docker image from AWS ECR, DockerHub, GitHub, GCP, or Lightning's own registry.
+  </Card>
+</CardGroup>
+
+## Choosing an approach
+
+**Turn-key models** are the fastest path to production. Browse the [AI Hub](https://lightning.ai/ai-hub), pick a model, choose a cloud account, and deploy. No code required. Models autoscale on demand and scale to zero when idle.
+
+**Studio deployment** (Snapshot Deploy) is best when you already have a working server running in a Studio. Lightning snapshots the full environment — code, packages, exposed ports — and launches it as a scalable, monitored deployment. Updates and rollbacks are handled without touching infrastructure.
+
+**Container deployment** is best when you have an existing Docker workflow or need to bring your own image. Lightning supports images from AWS ECR, DockerHub, GitHub Container Registry, GCP Artifact Registry, and its own built-in container registry. Private registry credentials are passed at deploy time.

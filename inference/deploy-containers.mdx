@@ -1,0 +1,145 @@
+---
+title: "Deploy a container"
+description: "Turn any Docker container into an autoscaling inference API. Supports AWS ECR, DockerHub, GitHub Container Registry, GCP Artifact Registry, and Lightning's own registry."
+---
+
+Lightning can deploy any Docker container as an autoscaling inference API. You can pull images from public or private registries, or use Lightning's built-in container registry.
+
+## Lightning container registry
+
+The Lightning container registry lets you store and deploy containers without managing your own Docker registry. All containers are encrypted at rest with AES-256. With BYOC, containers are stored in your private AWS S3 bucket and never leave your VPC.
+
+### Upload via the Lightning CLI
+
+Install the Lightning CLI:
+
+```bash
+pip install -U lightning-sdk
+```
+
+**From a Studio:**
+
+```bash
+docker build -t my-vllm-server .
+lightning upload container my-vllm-server --teamspace org-or-user-name/teamspace-name --tag latest
+```
+
+**From macOS:**
+
+```bash
+brew install docker
+open -a Docker
+lightning upload container my-vllm-server --teamspace org-or-user-name/teamspace-name --tag latest
+```
+
+**From Linux:**
+
+```bash
+curl -fsSL https://get.docker.com | bash
+sudo systemctl restart docker
+lightning upload container my-vllm-server --teamspace org-or-user-name/teamspace-name --tag latest
+```
+
+**From Windows:** [Install Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/), then:
+
+```bash
+lightning upload container my-vllm-server --teamspace org-or-user-name/teamspace-name --tag latest
+```
+
+### Upload via Docker CLI
+
+Login to the Lightning container registry ([get your API key here](https://lightning.ai/lightning-ai/home?settings=keys)), tag your image, and push:
+
+```bash
+export LIGHTNING_API_KEY=XXXXXXXXX-XXXXXXXXXXXXXXXXXX-XXXXXXXXXXXXXXXXXXX
+echo $LIGHTNING_API_KEY | docker login litcr.io --username=your-lightning-username --password-stdin
+
+docker build -t my-vllm-server .
+docker tag my-vllm-server:latest litcr.io/lit-container/org-or-user-name/teamspace-name/my-vllm-server
+docker push litcr.io/lit-container/org-or-user-name/teamspace-name/my-vllm-server
+```
+
+### Deploy
+
+Once uploaded, select the container from the Lightning dashboard and click **Deploy**.
+
+[Watch: Container deploy demo](https://pl-bolts-doc-images.s3.us-east-2.amazonaws.com/app-2/container-deploy-demo.mp4)
+
+---
+
+## AWS ECR
+
+To deploy a private [AWS ECR](https://aws.amazon.com/ecr/) image, the ECR must be authorized to the AWS account you've connected to Lightning. Then specify the image name and tag when starting the deployment:
+
+```text
+$AWS_ACCOUNT_ID.dkr.ecr.$LIGHTNING_CLUSTER_PRIMARY_REGION.amazonaws.com/litserve-model:latest
+```
+
+<Note>Private AWS ECR deployments are only available on the Enterprise tier when connected to your AWS account.</Note>
+
+---
+
+## DockerHub
+
+To deploy a private [DockerHub](https://hub.docker.com/) image:
+
+1. Go to your [DockerHub personal access tokens page](https://app.docker.com/settings/personal-access-tokens).
+2. Generate a new token with **Read-only** permissions.
+
+   ![Generating a new token](https://storage.googleapis.com/lightning-avatars/litpages/01j4mf2fcgrg8sfhq339x3t7ye/1c870eca-fe72-4283-9d4a-32c23148df9b.png)
+
+3. Copy the generated token.
+
+   ![Copy the personal access token](https://storage.googleapis.com/lightning-avatars/litpages/01j4mf2fcgrg8sfhq339x3t7ye/e384a734-6007-495a-96ef-1451e531e94f.png)
+
+4. When starting a deployment, open **Registry credentials** and enter your DockerHub username and the token as the password. Click **Deploy**.
+
+   ![Specify registry credentials](https://storage.googleapis.com/lightning-avatars/litpages/01j4mf2fcgrg8sfhq339x3t7ye/de27d906-319b-4a4d-81d7-ff8e8db9e115.png)
+
+---
+
+## GitHub Container Registry
+
+To deploy a private image from [GitHub Container Registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry):
+
+1. Go to your [personal access tokens (classic)](https://github.com/settings/tokens) page. Fine-grained tokens are not supported by GitHub Packages — it must be a classic token.
+2. Click **Generate new token (classic)**.
+3. Select the `read:packages` scope.
+
+   ![read:packages permission](https://storage.googleapis.com/lightning-avatars/litpages/01j4mf2fcgrg8sfhq339x3t7ye/421c5259-8345-4d7e-b027-432717323af8.png)
+
+4. When creating the deployment, open **Registry credentials** and enter your GitHub username and the token as the password. Click **Deploy**.
+
+   ![Specify registry credentials for GitHub](https://storage.googleapis.com/lightning-avatars/litpages/01j4mf2fcgrg8sfhq339x3t7ye/3b052b7a-8fac-4858-9a7a-921a74bf1417.png)
+
+---
+
+## GCP Artifact Registry
+
+Deploying from a private [GCP Artifact Registry](https://cloud.google.com/artifact-registry/docs/overview) requires your GCP account to be connected to Lightning AI (BYOC).
+
+### Enable GCP role
+
+1. Find the Lightning AI BYOC project role for your account. It is named **Lightning AI BYOC Project Role (\<your account name\>)**.
+
+   ![Lightning project roles](https://storage.googleapis.com/lightning-avatars/litpages/01j4mf2fcgrg8sfhq339x3t7ye/c280c57d-82b5-4f5e-88c0-d7b55ce0166b.png)
+
+2. Edit the role to allow access to your GCP Artifact Registry.
+
+   ![Filtering the roles](https://storage.googleapis.com/lightning-avatars/litpages/01j4mf2fcgrg8sfhq339x3t7ye/3ca707a4-4aee-4c7b-bd4d-37690fc7ea32.png)
+
+3. Enable all permissions required to pull images (list, download, etc.).
+
+   ![Enabling registry permissions](https://storage.googleapis.com/lightning-avatars/litpages/01j4mf2fcgrg8sfhq339x3t7ye/f1a7a044-7470-48e8-8efd-e52257e59079.png)
+
+4. Filter by `artifactregistry.repositories` and add the get, list, and download permissions. Remove create/delete if not needed.
+
+   ![Add registry repository permissions](https://storage.googleapis.com/lightning-avatars/litpages/01j4mf2fcgrg8sfhq339x3t7ye/21c50ab5-eb4d-491a-907b-4cc169fc97c1.png)
+
+5. Save the role.
+
+### Deploy
+
+Select your private image name and tag when starting the deployment.
+
+![Starting a GCP Artifact Registry deployment](https://storage.googleapis.com/lightning-avatars/litpages/01jrvg6dm2rc0exkb695c2egz9/976e9c39-8466-43e1-b025-8a612b5dc5f3.png)

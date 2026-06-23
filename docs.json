@@ -22,7 +22,7 @@
         ]
       },
       {
-        "group": "Concepts",
+        "group": "Setting up concepts",
         "pages": [
           "concepts/organizations",
           "concepts/teamspaces",
@@ -30,7 +30,7 @@
         ]
       },
       {
-        "group": "Setup",
+        "group": "Setting up for your organization type",
         "pages": [
           "setup/startups",
           "setup/enterprise"
@@ -41,6 +41,15 @@
         "pages": [
           "studio/configure",
           "quickstart/notebooks"
+        ]
+      },
+      {
+        "group": "Inference",
+        "pages": [
+          "inference/overview",
+          "inference/turn-key-models",
+          "inference/deploy-studio",
+          "inference/deploy-containers"
         ]
       },
       {
