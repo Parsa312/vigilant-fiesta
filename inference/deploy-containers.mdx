@@ -9,22 +9,22 @@ Lightning can deploy any Docker container as an autoscaling inference API. You c
 
 The Lightning container registry lets you store and deploy containers without managing your own Docker registry. All containers are encrypted at rest with AES-256. With BYOC, containers are stored in your private AWS S3 bucket and never leave your VPC.
 
-### Upload via the Lightning CLI
-
-Install the Lightning CLI:
+To upload containers to the Lit container registry, install the Lightning CLI:
 
 ```bash
 pip install -U lightning-sdk
 ```
 
-**From a Studio:**
+The following sections provide the commands to push your containers from different environments.
+
+**Push from a Studio:**
 
 ```bash
 docker build -t my-vllm-server .
 lightning upload container my-vllm-server --teamspace org-or-user-name/teamspace-name --tag latest
 ```
 
-**From macOS:**
+**Push from macOS:**
 
 ```bash
 brew install docker
@@ -32,7 +32,7 @@ open -a Docker
 lightning upload container my-vllm-server --teamspace org-or-user-name/teamspace-name --tag latest
 ```
 
-**From Linux:**
+**Push from Linux:**
 
 ```bash
 curl -fsSL https://get.docker.com | bash
@@ -40,13 +40,13 @@ sudo systemctl restart docker
 lightning upload container my-vllm-server --teamspace org-or-user-name/teamspace-name --tag latest
 ```
 
-**From Windows:** [Install Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/), then:
+**Push from Windows:** [Install Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/), then:
 
 ```bash
 lightning upload container my-vllm-server --teamspace org-or-user-name/teamspace-name --tag latest
 ```
 
-### Upload via Docker CLI
+### Push using the Docker CLI
 
 Login to the Lightning container registry ([get your API key here](https://lightning.ai/lightning-ai/home?settings=keys)), tag your image, and push:
 
@@ -69,7 +69,7 @@ Once uploaded, select the container from the Lightning dashboard and click **Dep
 
 ## AWS ECR
 
-To deploy a private [AWS ECR](https://aws.amazon.com/ecr/) image, the ECR must be authorized to the AWS account you've connected to Lightning. Then specify the image name and tag when starting the deployment:
+To deploy a private [AWS ECR](https://aws.amazon.com/ecr/) image, make sure the ECR image is authorized to the AWS account you've connected to Lightning. After you've checked, specify the image name and tag when starting the deployment:
 
 ```text
 $AWS_ACCOUNT_ID.dkr.ecr.$LIGHTNING_CLUSTER_PRIMARY_REGION.amazonaws.com/litserve-model:latest
