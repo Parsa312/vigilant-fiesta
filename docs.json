@@ -39,7 +39,8 @@
       {
         "group": "Studio",
         "pages": [
-          "studio/configure"
+          "studio/configure",
+          "quickstart/notebooks"
         ]
       },
       {
