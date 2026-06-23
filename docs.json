@@ -46,7 +46,7 @@
       {
         "group": "Training",
         "pages": [
-          "training/pretrain"
+          "training/experiment-tracking"
         ]
       }
     ]

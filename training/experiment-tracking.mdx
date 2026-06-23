@@ -1,0 +1,102 @@
+---
+title: "Track a Training Run"
+description: "Create an experiment, log metadata and metrics, upload a file, and finalize the run using the litlogger dict-style API."
+---
+
+Use litlogger to track experiments, log metrics, and store artifacts from your training runs.
+
+## Prerequisites
+
+LitLogger requires Python 3.10 or newer.
+
+Install from PyPI using `pip` or `uv`:
+
+```bash
+pip install litlogger
+```
+
+```bash
+uv add litlogger
+```
+
+To install the latest development version from GitHub:
+
+```bash
+pip install git+https://github.com/Lightning-AI/litlogger.git
+```
+
+```bash
+uv add git+https://github.com/Lightning-AI/litlogger.git
+```
+
+## Create an experiment
+
+```python
+import litlogger
+
+experiment = litlogger.init(name="quickstart")
+```
+
+[`litlogger.init()`](https://lightning.ai/docs/platform/train/experiment-management/tutorials/experiment-management/api.md#litlogger.init.init) returns an [`Experiment`](https://lightning.ai/docs/platform/train/experiment-management/tutorials/experiment-management/api.md#litlogger.experiment.Experiment) instance. That object is the main entrypoint for the API.
+
+## Log metadata
+
+Static string assignments become [`metadata`](https://lightning.ai/docs/platform/train/experiment-management/tutorials/experiment-management/api.md#litlogger.experiment.Experiment.metadata) entries:
+
+```python
+experiment["model"] = "resnet50"
+experiment["dataset"] = "cifar10"
+experiment["optimizer"] = "adamw"
+```
+
+## Log metrics
+
+Time-series metrics use [`Series`](https://lightning.ai/docs/platform/train/experiment-management/tutorials/experiment-management/api.md#litlogger.series.Series) through [`append()`](https://lightning.ai/docs/platform/train/experiment-management/tutorials/experiment-management/api.md#litlogger.series.Series.append) or [`extend()`](https://lightning.ai/docs/platform/train/experiment-management/tutorials/experiment-management/api.md#litlogger.series.Series.extend) on `experiment["key"]`:
+
+```python
+for step in range(10):
+    experiment["train/loss"].append(1.0 / (step + 1), step=step)
+    experiment["train/accuracy"].append(step / 10.0, step=step)
+```
+
+You can also batch values:
+
+```python
+experiment["val/loss"].extend([0.5, 0.4, 0.3], start_step=100)
+```
+
+## Log a file
+
+Use [`File`](https://lightning.ai/docs/platform/train/experiment-management/tutorials/experiment-management/api.md#litlogger.media.File) for static artifacts:
+
+```python
+from litlogger import File
+
+experiment["config"] = File("config.yaml")
+```
+
+## Inspect logged data
+
+The experiment exposes runtime views through [`metadata`](https://lightning.ai/docs/platform/train/experiment-management/tutorials/experiment-management/api.md#litlogger.experiment.Experiment.metadata), [`metrics`](https://lightning.ai/docs/platform/train/experiment-management/tutorials/experiment-management/api.md#litlogger.experiment.Experiment.metrics), [`artifacts`](https://lightning.ai/docs/platform/train/experiment-management/tutorials/experiment-management/api.md#litlogger.experiment.Experiment.artifacts), and [`url`](https://lightning.ai/docs/platform/train/experiment-management/tutorials/experiment-management/api.md#litlogger.experiment.Experiment.url):
+
+```python
+print(experiment.metadata)
+print(experiment.metrics)
+print(experiment.artifacts)
+print(experiment.url)
+```
+
+## Finalize
+
+Use [`finalize()`](https://lightning.ai/docs/platform/train/experiment-management/tutorials/experiment-management/api.md#litlogger.experiment.Experiment.finalize) when the run is complete:
+
+```python
+experiment.finalize()
+```
+
+## Next steps
+
+- [Files, Media, Models](https://lightning.ai/docs/platform/train/experiment-management/tutorials/experiment-management/tutorials/file_media_model.md) — log files, media, and models
+- [Lightning Tutorial](https://lightning.ai/docs/platform/train/experiment-management/tutorials/experiment-management/tutorials/lightning.md) — Lightning/Fabric integration
+- [Complete Workflow](https://lightning.ai/docs/platform/train/experiment-management/tutorials/experiment-management/tutorials/complete_workflow.md) — a full log-and-fetch workflow
+- [Standalone Usage](https://lightning.ai/docs/platform/train/experiment-management/tutorials/experiment-management/guide/standalone.md) — the full standalone guide
