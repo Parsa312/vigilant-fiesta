@@ -17,8 +17,7 @@
           "create-account",
           "quickstart",
           "quickstart/studio",
-          "quickstart/model-apis",
-          "quickstart/notebooks"
+          "quickstart/model-apis"
         ]
       },
       {
