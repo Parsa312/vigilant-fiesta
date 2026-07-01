@@ -1,43 +1,36 @@
 ---
-title: "Overview"
-description: "Lightning AI is a cloud platform built specifically for AI development — from first prototype to production."
+title: Introduction
+description: What Firecrawl is and how this documentation sample is organized
 ---
 
-Use Lightning AI to take an idea all the way to a deployed AI product without leaving your browser.
-Write code, train on cloud GPUs, and deploy a production API in one persistent workspace. You don't need to manage infrastructure or set up environments. 
+Firecrawl is a web data API built for AI agents and LLMs. Instead of wiring up headless browsers, HTML parsers, and rate-limit handling yourself, you send a URL (or a crawl target) to Firecrawl and get back clean, LLM-ready Markdown, structured JSON, or screenshots — including for JavaScript-rendered pages that a plain HTTP request would return empty.
 
-If you're training a model, you can start on a free CPU instance and scale to GPUs when you need it. When you're finished, you can ship to an endpoint without modifying your code.
+<Note>
+  This is an independent documentation sample created by Parsa Shahbodaghi to demonstrate an approach to Firecrawl's developer docs. It is not official Firecrawl documentation and is not affiliated with or endorsed by Firecrawl.
+</Note>
 
-Instead of stitching together disconnected tools in a traditional cloud, you can use Lightning AI to:
+## What's in this sample
 
-- Train models
-- Deploy models at scale
-- Code collaboratively in real time
-- Build agents
-- Create AI applications
+This is a small slice of a full docs site, focused on the two endpoints developers reach for first:
 
-Lightning AI provides you with a Studio. A Studio is an interactive, cloud-based environment that behaves like a local dev machine — except everything you install or configure persists, even after it sleeps.
-
-You can use a Studio to:
-
-- Build and iterate, with GPUs available on demand
-- Set breakpoints and debug live API requests
-- Pick up exactly where you left off, with your environment intact
-- Share your work with teammates and stakeholders
-
-When it's ready, you can deploy that same environment and scale it to your needs.
-
-To get started with Lightning AI, [create an account](/create-account).
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="bolt" href="/quickstart">
+    Get an API key and make your first scrape in under 5 minutes.
+  </Card>
+  <Card title="API Reference" icon="code" href="/api-reference/scrape">
+    Full parameter and response docs for `/v2/scrape` and `/v2/crawl`.
+  </Card>
+  <Card title="Python SDK" icon="python" href="/sdks/python">
+    Install and use the `firecrawl` Python package.
+  </Card>
+  <Card title="Node SDK" icon="node-js" href="/sdks/nodejs">
+    Install and use the `firecrawl` Node package.
+  </Card>
+</CardGroup>
 
 ## Core concepts
 
-**[Studios](/studio/configure)** are persistent, cloud-based development environments. A Studio works like your local machine — install packages, run servers, expose ports, and use your own IDE. It stays on and can be shared or cloned by teammates. When a prototype is ready, you can deploy the Studio as a snapshot without changing environments.
+- **Scrape** — fetch a single URL and get back Markdown, HTML, links, structured data, or a screenshot.
+- **Crawl** — start from a URL, follow links across a site, and scrape every page that matches your filters. Crawls run asynchronously; you poll a status endpoint until they finish.
 
-**[Organizations](/concepts/organizations)** are the top-level account boundary on Lightning, grouping teamspaces, members, cloud accounts, and billing. Each organization is subdivided into Teamspaces for different projects or teams.
-
-**[Teamspaces](/concepts/teamspaces)** group the people, Studios, data, and compute for a project under one boundary. Teamspaces handle access control, compute budgets, and resource isolation so teams can collaborate without stepping on each other.
-
-**[Training](/training/pretrain)** provides multi-node GPU clusters for pretraining and fine-tuning. Jobs run on auto-provisioned infrastructure with built-in checkpointing and fault tolerance.
-
-**[Inference](/inference/overview)** gives models a production endpoint — either via Lightning-hosted model APIs or custom containers you deploy yourself.
-
+Both endpoints accept the same `formats` and extraction options, so what you learn scraping one page applies directly to crawling a whole site.

@@ -1,0 +1,148 @@
+---
+title: "Scrape"
+description: "POST /v2/scrape — scrape a single URL and get back Markdown, HTML, a screenshot, or structured JSON"
+---
+
+## Overview
+
+`POST /v2/scrape` renders a single URL (including JavaScript-heavy pages) and returns the content in whichever formats you ask for. It's synchronous — the response comes back once the page has finished loading, no polling required.
+
+```
+POST https://api.firecrawl.dev/v2/scrape
+```
+
+## Authentication
+
+Send your API key as a bearer token on every request:
+
+```
+Authorization: Bearer fc-your-api-key
+```
+
+## Request body
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `url` | `string` (required) | — | The URL to scrape. |
+| `formats` | `array` | `["markdown"]` | Output formats to include: `markdown`, `html`, `rawHtml`, `links`, `screenshot`, `json`, `summary`, `changeTracking`, and others. Entries can be plain strings or objects with options, e.g. `{ "type": "json", "schema": {...} }`. |
+| `onlyMainContent` | `boolean` | `true` | Strip headers, navs, and footers before generating output. A deterministic HTML-level filter — no LLM involved. |
+| `onlyCleanContent` | `boolean` | `false` | Beta. Runs an extra LLM pass over the Markdown to remove residual boilerplate (cookie banners, newsletter signups, related-article lists) that `onlyMainContent` can miss. |
+| `includeTags` / `excludeTags` | `string[]` | — | HTML tags to explicitly include or exclude from the output. |
+| `maxAge` | `integer` (ms) | `172800000` | Serve a cached copy if it's younger than this. Enabling caching can speed up repeat scrapes significantly. |
+| `waitFor` | `integer` (ms) | `0` | Extra delay before capturing content, on top of Firecrawl's automatic wait logic. |
+| `mobile` | `boolean` | `false` | Emulate a mobile device. |
+| `timeout` | `integer` (ms) | `60000` | Request timeout. Range: `1000`–`300000`. |
+| `actions` | `array` | — | Browser actions (click, write, scroll, wait, screenshot, execute JS) to run before content is captured. |
+| `location` | `object` | `{ country: "US" }` | Proxy country/language emulation. |
+| `blockAds` | `boolean` | `true` | Block ads and cookie popups. |
+| `proxy` | `"basic" \| "enhanced" \| "auto"` | `"auto"` | Proxy tier. `enhanced` costs more but is more reliable against anti-bot protection; `auto` retries with `enhanced` only if `basic` fails. |
+
+<Note>
+  This table covers the parameters most integrations use. The full request schema also includes cache/compliance controls (`minAge`, `storeInCache`, `lockdown`, `zeroDataRetention`, `redactPII`) and file-parsing options (`parsers`) — see the [official Firecrawl API reference](https://docs.firecrawl.dev/api-reference/endpoint/scrape) for the complete list.
+</Note>
+
+## Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "markdown": "string",
+    "html": "string",
+    "rawHtml": "string",
+    "links": ["string"],
+    "screenshot": "string",
+    "metadata": {
+      "title": "string",
+      "description": "string",
+      "language": "string",
+      "sourceURL": "string",
+      "statusCode": 123,
+      "error": "string"
+    },
+    "warning": "string"
+  }
+}
+```
+
+`data` only contains the keys corresponding to the `formats` you requested — request `["markdown"]` and you'll get back `markdown` and `metadata` only.
+
+### Example: live response
+
+The example below is a real, unmodified response captured from `POST /v2/scrape` for `https://firecrawl.dev` with `formats: ["markdown"]` (Markdown truncated for length):
+
+```json
+{
+  "success": true,
+  "data": {
+    "markdown": "# Power AI agents with clean web data\n\nThe complete toolkit to search, scrape, and interact with the web at scale. [It's also open source.](https://github.com/firecrawl/firecrawl)\n\n...",
+    "metadata": {
+      "title": "Firecrawl - The context API to search, scrape, and interact with the web at scale.",
+      "description": "Firecrawl is the context API to search, scrape, and interact with the web at scale. Turn any source into clean Markdown or structured data your agents can ship with.",
+      "og:site_name": "Firecrawl - The context API to search, scrape, and interact with the web at scale.",
+      "sourceURL": "https://firecrawl.dev",
+      "url": "https://www.firecrawl.dev/",
+      "statusCode": 200
+    }
+  }
+}
+```
+
+## Error handling
+
+Errors return `success: false` with an `error` message. This is a real `400` captured by sending `{"url": "not-a-valid-url"}`:
+
+```json
+// HTTP 400
+{
+  "success": false,
+  "code": "BAD_REQUEST",
+  "error": "URL must have a valid top-level domain or be a valid path",
+  "details": [
+    {
+      "code": "custom",
+      "path": ["url"],
+      "message": "URL must have a valid top-level domain or be a valid path"
+    }
+  ]
+}
+```
+
+| Status | Meaning |
+|---|---|
+| `400` | Malformed request — usually an invalid `url` or an unsupported combination of options. |
+| `402` | Payment required — your account has run out of credits. |
+| `429` | Rate limited — you've exceeded your plan's requests-per-minute limit. |
+| `500` | The target page could not be scraped (e.g. it timed out or blocked the request). |
+
+## Examples
+
+<CodeGroup>
+
+```bash curl
+curl -X POST https://api.firecrawl.dev/v2/scrape \
+  -H "Authorization: Bearer $FIRECRAWL_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://firecrawl.dev",
+    "formats": ["markdown", "links"],
+    "onlyMainContent": true
+  }'
+```
+
+```python Python SDK
+from firecrawl import Firecrawl
+
+app = Firecrawl(api_key="fc-your-api-key")
+
+result = app.scrape(
+    "https://firecrawl.dev",
+    formats=["markdown", "links"],
+    only_main_content=True,
+)
+
+print(result.markdown)
+print(result.metadata.title)
+```
+
+</CodeGroup>

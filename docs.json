@@ -1,62 +1,26 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Lightning AI",
+  "name": "Firecrawl API Reference (Sample)",
   "colors": {
-    "primary": "#792EE5",
-    "light": "#A855F7",
-    "dark": "#5B21B6"
+    "primary": "#FA5D19",
+    "light": "#FF8C4B",
+    "dark": "#C2410C"
   },
   "favicon": "/favicon.svg",
   "navigation": {
     "groups": [
       {
         "group": "Get Started",
-        "pages": [
-          "introduction",
-          "create-account",
-          "quickstart",
-          "quickstart/studio",
-          "quickstart/model-apis"
-        ]
+        "pages": ["introduction", "quickstart"]
       },
       {
-        "group": "Setting up concepts",
-        "pages": [
-          "concepts/organizations",
-          "concepts/teamspaces",
-          "concepts/members"
-        ]
+        "group": "API Reference",
+        "pages": ["api-reference/scrape", "api-reference/crawl"]
       },
       {
-        "group": "Setting up for your organization type",
-        "pages": [
-          "setup/startups",
-          "setup/enterprise"
-        ]
-      },
-      {
-        "group": "Studio",
-        "pages": [
-          "studio/configure",
-          "quickstart/notebooks"
-        ]
-      },
-      {
-        "group": "Inference",
-        "pages": [
-          "inference/overview",
-          "inference/turn-key-models",
-          "inference/deploy-studio",
-          "inference/deploy-containers",
-          "inference/litserve"
-        ]
-      },
-      {
-        "group": "Training",
-        "pages": [
-          "training/experiment-tracking"
-        ]
+        "group": "SDKs",
+        "pages": ["sdks/python", "sdks/nodejs"]
       }
     ]
   },
@@ -66,22 +30,18 @@
   },
   "navbar": {
     "links": [
-      {
-        "label": "Support",
-        "href": "https://lightning.ai/support"
-      }
+      { "label": "GitHub", "href": "https://github.com/Parsa312/vigilant-fiesta" }
     ],
     "primary": {
       "type": "button",
-      "label": "Get Started",
-      "href": "https://lightning.ai"
+      "label": "Get an API Key",
+      "href": "https://www.firecrawl.dev"
     }
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/LightningAI",
-      "github": "https://github.com/Lightning-AI",
-      "linkedin": "https://www.linkedin.com/company/lightning-ai"
+      "github": "https://github.com/Parsa312/vigilant-fiesta",
+      "linkedin": "https://www.linkedin.com/in/parsa-shahbodaghi"
     }
   }
 }

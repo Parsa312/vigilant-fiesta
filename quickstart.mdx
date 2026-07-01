@@ -1,16 +1,90 @@
 ---
-title: "Quickstart"
-description: "Choose how you want to get started with Lightning AI."
+title: Quickstart
+description: Get an API key, install an SDK, and make your first scrape in under 5 minutes
 ---
 
-Lightning AI gives you several ways to start building. Most users begin with a Studio — a persistent cloud environment where you can write code, run models, and deploy services.
-If you want to call a model without setting up an environment, you can use the model APIs directly. If you prefer notebooks, JupyterLab is available in the browser from any Studio.
+## 1. Get an API key
 
-<CardGroup cols={2}>
-  <Card title="Create a Studio" icon="bolt" href="/quickstart/studio">
-    Set up a persistent cloud dev environment. Starts on a free CPU instance.
-  </Card>
-  <Card title="Use model APIs" icon="code" href="/quickstart/model-apis">
-    Send a request to a hosted model. No Studio required. 30M free tokens per month.
-  </Card>
-</CardGroup>
+Sign up at [firecrawl.dev](https://www.firecrawl.dev) and grab an API key from your dashboard. Keys are prefixed `fc-`.
+
+Store it as an environment variable rather than pasting it into code:
+
+```bash
+export FIRECRAWL_API_KEY="fc-your-api-key"
+```
+
+## 2. Install the SDK
+
+<CodeGroup>
+
+```bash Python
+pip install firecrawl-py
+```
+
+```bash Node
+npm install firecrawl
+```
+
+</CodeGroup>
+
+## 3. Make your first scrape
+
+<CodeGroup>
+
+```python Python
+from firecrawl import Firecrawl
+
+app = Firecrawl(api_key="fc-your-api-key")
+
+result = app.scrape("https://firecrawl.dev")
+print(result.markdown)
+```
+
+```javascript Node
+import Firecrawl from "firecrawl";
+
+const app = new Firecrawl({ apiKey: "fc-your-api-key" });
+
+const result = await app.scrape("https://firecrawl.dev");
+console.log(result.markdown);
+```
+
+```bash curl
+curl -X POST https://api.firecrawl.dev/v2/scrape \
+  -H "Authorization: Bearer $FIRECRAWL_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://firecrawl.dev",
+    "formats": ["markdown"]
+  }'
+```
+
+</CodeGroup>
+
+## 4. See the Markdown output
+
+Firecrawl renders the page (including any JavaScript) and returns clean Markdown alongside metadata:
+
+```json
+{
+  "success": true,
+  "data": {
+    "markdown": "# Power AI agents with clean web data\n\nThe complete toolkit to search, scrape, and interact with the web at scale...",
+    "metadata": {
+      "title": "Firecrawl - The context API to search, scrape, and interact with the web at scale.",
+      "description": "Firecrawl is the context API to search, scrape, and interact with the web at scale...",
+      "sourceURL": "https://firecrawl.dev",
+      "statusCode": 200
+    }
+  }
+}
+```
+
+<Note>
+  The `markdown` and `metadata` values above are trimmed for readability; a real response includes the full page content. This example was captured from a live call to `/v2/scrape` while writing this doc.
+</Note>
+
+## Next steps
+
+- Read the full [`/v2/scrape` reference](/api-reference/scrape) for every parameter (screenshots, structured extraction, wait conditions, and more).
+- Use [`/v2/crawl`](/api-reference/crawl) when you need every page on a site, not just one.

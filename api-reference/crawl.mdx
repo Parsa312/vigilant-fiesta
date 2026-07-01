@@ -1,0 +1,150 @@
+---
+title: "Crawl"
+description: "POST /v2/crawl and GET /v2/crawl/{id} — crawl an entire site and poll for results"
+---
+
+## Overview
+
+Crawling starts from a URL, follows links across the site, and scrapes every page that matches your filters. Because a crawl can take anywhere from seconds to minutes depending on site size, the endpoint is asynchronous: you start a job with `POST /v2/crawl`, then poll `GET /v2/crawl/{id}` until it finishes.
+
+## Start a crawl
+
+```
+POST https://api.firecrawl.dev/v2/crawl
+```
+
+### Request body
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `url` | `string` (required) | — | The base URL to start crawling from. |
+| `prompt` | `string` | — | Natural-language description of what to crawl; Firecrawl generates the other parameters for you. Explicit parameters override the generated ones. |
+| `includePaths` / `excludePaths` | `string[]` | — | Regex patterns matched against the URL pathname to include or exclude pages. |
+| `maxDiscoveryDepth` | `integer` | — | Max link-following depth. The start URL and sitemapped pages are depth `0`. |
+| `sitemap` | `"include" \| "skip" \| "only"` | `"include"` | `skip` ignores the sitemap and discovers pages purely by following links; `only` crawls exclusively URLs found in the sitemap. |
+| `limit` | `integer` | `10000` | Maximum number of pages to crawl. |
+| `crawlEntireDomain` | `boolean` | `false` | When `true`, follows sibling/parent links too, not just deeper child paths. |
+| `allowExternalLinks` | `boolean` | `false` | Allow following links off the starting domain. |
+| `allowSubdomains` | `boolean` | `false` | Allow following links to subdomains of the starting domain. |
+| `ignoreRobotsTxt` | `boolean` | `false` | Ignore `robots.txt` rules. |
+| `delay` | `integer` (ms) | — | Delay between requests to the same site. |
+| `maxConcurrency` | `integer` | — | Cap on concurrent page scrapes for this crawl. |
+| `scrapeOptions` | `object` | — | Any [`/v2/scrape`](/api-reference/scrape) parameter (`formats`, `onlyMainContent`, `waitFor`, etc.), applied to every page the crawl visits. |
+
+### Response
+
+Starting a crawl returns immediately with a job ID — it does not wait for the crawl to finish:
+
+```json
+{
+  "success": true,
+  "id": "string",
+  "url": "string"
+}
+```
+
+**Live example.** This is an unmodified response from `POST /v2/crawl` with `{"url": "https://docs.firecrawl.dev", "limit": 3}`:
+
+```json
+{
+  "success": true,
+  "id": "019f1ee5-be71-72b8-a09a-ac9acaf62850",
+  "url": "https://api.firecrawl.dev/v2/crawl/019f1ee5-be71-72b8-a09a-ac9acaf62850"
+}
+```
+
+## Check crawl status
+
+```
+GET https://api.firecrawl.dev/v2/crawl/{id}
+```
+
+Poll this endpoint until `status` is `completed` or `failed`. There's no webhook in this sample — for production use, prefer Firecrawl's webhook support over tight polling loops.
+
+### Response
+
+| Field | Type | Description |
+|---|---|---|
+| `status` | `string` | `scraping`, `completed`, or `failed`. |
+| `total` | `integer` | Number of pages the crawl attempted. |
+| `completed` | `integer` | Number of pages successfully scraped so far. |
+| `creditsUsed` | `integer` | Credits billed for this crawl. |
+| `createdAt` / `completedAt` | `string` (date-time) | `completedAt` is only present once the crawl reaches a terminal state. |
+| `duration` | `number` | Elapsed seconds — `createdAt` to `completedAt` (or to now, if still running). |
+| `next` | `string \| null` | URL to fetch the next page of results, present if the crawl isn't finished or the payload exceeds 10MB. |
+| `data` | `array` | One scrape-result object per page, shaped like [`/v2/scrape`](/api-reference/scrape)'s `data`. |
+
+**Live example.** Polling the crawl started above, a few seconds after it completed:
+
+```json
+{
+  "success": true,
+  "status": "completed",
+  "completed": 3,
+  "total": 3,
+  "creditsUsed": 3,
+  "expiresAt": "2026-07-02T18:17:18.000Z",
+  "createdAt": "2026-07-01T18:16:40.822Z",
+  "completedAt": "2026-07-01T18:16:43.351Z",
+  "duration": 2.529,
+  "data": [
+    {
+      "markdown": "...",
+      "metadata": {
+        "title": "Introduction | Firecrawl",
+        "sourceURL": "https://docs.firecrawl.dev/introduction",
+        "statusCode": 200
+      }
+    }
+  ]
+}
+```
+
+## Polling behavior
+
+- `GET /v2/crawl/{id}` is cheap to call repeatedly — a 2–5 second poll interval is reasonable for small crawls, longer for large ones.
+- Check `status` first. While it's `scraping`, `data` may already contain pages that finished, but the set isn't final until `status` is `completed`.
+- If `next` is set, fetch it to page through additional results rather than assuming `data` is complete in one response.
+- A `failed` status means the crawl stopped before finishing — inspect the completed pages in `data` for a partial result.
+
+## Example
+
+<CodeGroup>
+
+```bash curl
+# Start the crawl
+curl -X POST https://api.firecrawl.dev/v2/crawl \
+  -H "Authorization: Bearer $FIRECRAWL_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://docs.firecrawl.dev",
+    "limit": 3,
+    "scrapeOptions": { "formats": ["markdown"] }
+  }'
+
+# Poll for status using the returned id
+curl https://api.firecrawl.dev/v2/crawl/019f1ee5-be71-72b8-a09a-ac9acaf62850 \
+  -H "Authorization: Bearer $FIRECRAWL_API_KEY"
+```
+
+```python Python SDK
+from firecrawl import Firecrawl
+
+app = Firecrawl(api_key="fc-your-api-key")
+
+# crawl() polls under the hood and blocks until the job finishes
+job = app.crawl(
+    "https://docs.firecrawl.dev",
+    limit=3,
+    scrape_options={"formats": ["markdown"]},
+)
+
+for page in job.data:
+    print(page.metadata.sourceURL)
+```
+
+</CodeGroup>
+
+## Errors
+
+Same status codes as [`/v2/scrape`](/api-reference/scrape#error-handling): `400` for malformed requests, `402` for insufficient credits, `429` for rate limits, `500` for unexpected failures. A `GET` against an `id` that doesn't exist (or belongs to a different account) returns `404`.

@@ -1,0 +1,88 @@
+---
+title: "Node.js SDK"
+description: "Install and use the firecrawl package to scrape and crawl from Node.js or TypeScript"
+---
+
+## Install
+
+```bash
+npm install firecrawl
+```
+
+## Authenticate
+
+```javascript
+import Firecrawl from "firecrawl";
+
+const app = new Firecrawl({ apiKey: "fc-your-api-key" });
+```
+
+You can also read the key from an environment variable instead of hardcoding it:
+
+```javascript
+import Firecrawl from "firecrawl";
+
+const app = new Firecrawl({ apiKey: process.env.FIRECRAWL_API_KEY });
+```
+
+## Scrape a page
+
+```javascript
+const result = await app.scrape("https://firecrawl.dev", {
+  formats: ["markdown", "links"],
+  onlyMainContent: true,
+});
+
+console.log(result.markdown);
+console.log(result.metadata.title);
+console.log(result.links.slice(0, 5));
+```
+
+`scrape()` is asynchronous — it awaits the rendered page and returns the requested formats directly, with the same fields documented in the [`/v2/scrape` reference](/api-reference/scrape).
+
+## Crawl a site
+
+```javascript
+const job = await app.crawl("https://docs.firecrawl.dev", {
+  limit: 50,
+  scrapeOptions: { formats: ["markdown"] },
+});
+
+console.log(job.status);              // "completed"
+console.log(`${job.completed}/${job.total}`);
+
+for (const page of job.data) {
+  console.log(page.metadata.sourceURL, "->", page.markdown.length, "chars");
+}
+```
+
+`crawl()` starts the job and polls `GET /v2/crawl/{id}` under the hood, resolving once the crawl reaches a terminal state. To manage polling yourself — for example, to stream progress to a UI — start the job and poll manually:
+
+```javascript
+const { id } = await app.startCrawl("https://docs.firecrawl.dev", { limit: 50 });
+
+let status = await app.getCrawlStatus(id);
+while (status.status === "scraping") {
+  console.log(`${status.completed}/${status.total} pages`);
+  await new Promise((r) => setTimeout(r, 3000));
+  status = await app.getCrawlStatus(id);
+}
+
+console.log(status.status);
+```
+
+## Error handling
+
+The SDK throws on non-2xx responses. Wrap calls in `try`/`catch` to handle rate limits (`429`) or insufficient credits (`402`) gracefully:
+
+```javascript
+try {
+  const result = await app.scrape("https://firecrawl.dev");
+} catch (err) {
+  console.error("Scrape failed:", err.message);
+}
+```
+
+<Note>
+  Exact method signatures may shift between SDK versions — check the installed version in `package.json` and the [npm page](https://www.npmjs.com/package/firecrawl) for details.
+</Note>
