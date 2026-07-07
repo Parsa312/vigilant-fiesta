@@ -3,7 +3,9 @@ title: Quickstart
 description: Get an API key, install an SDK, and make your first scrape in under 5 minutes
 ---
 
-## 1. Get an API key
+This guide gets you from zero to your first scrape. Every example is shown in cURL, Node, and Python, so you can follow along with whichever fits your stack.
+
+## 1. Get an API key and store it as an environment variable
 
 Sign up at [firecrawl.dev](https://www.firecrawl.dev) and grab an API key from your dashboard. Keys are prefixed `fc-`.
 
@@ -13,7 +15,20 @@ Store it as an environment variable rather than pasting it into code:
 export FIRECRAWL_API_KEY="fc-your-api-key"
 ```
 
+This only lasts for your current terminal session. To make it persist across new sessions, add it to your shell's startup file:
+
+```bash
+# bash
+echo 'export FIRECRAWL_API_KEY="fc-your-api-key"' >> ~/.bashrc && source ~/.bashrc
+
+# zsh (default on macOS since Catalina)
+echo 'export FIRECRAWL_API_KEY="fc-your-api-key"' >> ~/.zshrc && source ~/.zshrc
+```
+
+
 ## 2. Install the SDK
+
+Install either the Python or Node JS SDK.
 
 <CodeGroup>
 
@@ -27,14 +42,14 @@ npm install firecrawl
 
 </CodeGroup>
 
-## 3. Make your first scrape
+## 3. Scrape a website
 
 <CodeGroup>
 
 ```python Python
 from firecrawl import Firecrawl
 
-app = Firecrawl(api_key="fc-your-api-key")
+app = Firecrawl(api_key=os.environ["FIRECRAWL_API_KEY"])
 
 result = app.scrape("https://firecrawl.dev")
 print(result.markdown)
@@ -43,7 +58,7 @@ print(result.markdown)
 ```javascript Node
 import Firecrawl from "firecrawl";
 
-const app = new Firecrawl({ apiKey: "fc-your-api-key" });
+const app = new Firecrawl({ apiKey: process.env.FIRECRAWL_API_KEY });
 
 const result = await app.scrape("https://firecrawl.dev");
 console.log(result.markdown);

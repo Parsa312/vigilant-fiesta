@@ -3,10 +3,33 @@ title: Introduction
 description: What Firecrawl is and how this documentation sample is organized
 ---
 
-Firecrawl is a web data API built for AI agents and LLMs. Instead of wiring up headless browsers, HTML parsers, and rate-limit handling yourself, you send a URL (or a crawl target) to Firecrawl and get back clean, LLM-ready Markdown, structured JSON, or screenshots — including for JavaScript-rendered pages that a plain HTTP request would return empty.
+Use Firecrawl to get web data into a accessible format for AI agents and LLMs. You can use the Firecrawl API to:
+
+- Search the web
+- Scrape any page
+- Interact with any page
+
+ The API takes care of:
+
+- Headless browser rendering, including JavaScript-rendered pages that a plain HTTP request would return empty
+- HTML parsing
+- Rate-limit handling
+
+In return, you get clean data back in the following formats:
+
+- LLM-ready Markdown
+- Structured JSON
+- Screenshots
 
 <Note>
-  This is an independent documentation sample created by Parsa Shahbodaghi to demonstrate an approach to Firecrawl's developer docs. It is not official Firecrawl documentation and is not affiliated with or endorsed by Firecrawl.
+  This is an independent documentation sample created by Parsa Shahbodaghi to document code that can be easily verified. 
+  He made two changes to the documentation as a result of his testing:
+  
+  - The Python SDK returns an error if you an access token isn't provided. I was able to make calls using other SDKs, so this seems Python SDK specific.
+  - I changed the procedures to have customers store their credentials as environment variables.
+
+  This sample is only reflective of Parsa's code testing abilities. Creating an information architecture more broadly requires a deep understanding of the product and stakeholder and customer goals.
+
 </Note>
 
 ## What's in this sample

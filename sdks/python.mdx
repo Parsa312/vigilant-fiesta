@@ -3,7 +3,11 @@ title: "Python SDK"
 description: "Install and use firecrawl-py to scrape and crawl from Python"
 ---
 
+This guide covers installing `firecrawl-py` and using it to scrape and crawl pages. Before you start, you'll need a Firecrawl API key stored as the `FIRECRAWL_API_KEY` environment variable. For more information, see [Quickstart](/quickstart) if you haven't set one up yet.
+
 ## Install
+
+Install the firecrawl-py package using the following command:
 
 ```bash
 pip install firecrawl-py
@@ -11,13 +15,7 @@ pip install firecrawl-py
 
 ## Authenticate
 
-```python
-from firecrawl import Firecrawl
-
-app = Firecrawl(api_key="fc-your-api-key")
-```
-
-You can also read the key from an environment variable instead of hardcoding it:
+Create a `Firecrawl` client using the API key you stored as an environment variable:
 
 ```python
 import os
@@ -27,6 +25,8 @@ app = Firecrawl(api_key=os.environ["FIRECRAWL_API_KEY"])
 ```
 
 ## Scrape a page
+
+Call `scrape()` with a URL and the formats you want back:
 
 ```python
 result = app.scrape(
@@ -44,6 +44,8 @@ print(result.links[:5])
 
 ## Crawl a site
 
+Call `crawl()` with a starting URL to scrape it and its linked pages:
+
 ```python
 job = app.crawl(
     "https://docs.firecrawl.dev",
@@ -55,7 +57,7 @@ print(job.status)         # "completed"
 print(job.completed, "/", job.total)
 
 for page in job.data:
-    print(page.metadata.sourceURL, "->", len(page.markdown), "chars")
+    print(page.metadata.source_url, "->", len(page.markdown), "chars")
 ```
 
 `crawl()` starts the job and polls `GET /v2/crawl/{id}` under the hood, returning once the crawl reaches a terminal state. If you'd rather manage polling yourself — for example, to update a progress bar — start the job and poll manually:
@@ -71,20 +73,3 @@ while status.status == "scraping":
 
 print(status.status)
 ```
-
-## Error handling
-
-The SDK raises an exception on non-2xx responses. Wrap calls in `try`/`except` to handle rate limits (`429`) or insufficient credits (`402`) gracefully:
-
-```python
-from firecrawl import Firecrawl, FirecrawlError
-
-try:
-    result = app.scrape("https://firecrawl.dev")
-except FirecrawlError as e:
-    print(f"Scrape failed: {e}")
-```
-
-<Note>
-  Exact exception names and method signatures may shift between SDK versions — check `pip show firecrawl-py` and the [PyPI page](https://pypi.org/project/firecrawl-py/) for the version you have installed.
-</Note>
