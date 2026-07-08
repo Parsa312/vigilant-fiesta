@@ -71,7 +71,7 @@ Authorization: Bearer fc-your-api-key
 
 The example below shows the response shape for `POST /v2/scrape` on `https://firecrawl.dev` with `formats: ["markdown"]`. The `markdown` shown starts at the page's main heading, skipping the promotional banner that appears first in the actual response, and is truncated for length. The `metadata` fields shown are a relevant subset — the real response includes dozens of additional SEO and tracking fields, omitted here for readability.
 
-\`\`\`json
+```json
 {
   "success": true,
   "data": {
@@ -86,7 +86,7 @@ The example below shows the response shape for `POST /v2/scrape` on `https://fir
     }
   }
 }
-\`\`\`
+```
 
 ## Error handling
 
