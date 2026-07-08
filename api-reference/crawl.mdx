@@ -42,7 +42,7 @@ Starting a crawl returns immediately with a job ID — it does not wait for the 
 }
 ```
 
-**Live example.** This is an unmodified response from `POST /v2/crawl` with `{"url": "https://docs.firecrawl.dev", "limit": 3}`:
+This is an unmodified response from `POST /v2/crawl` with `{"url": "https://docs.firecrawl.dev", "limit": 3}`:
 
 ```json
 {
@@ -70,10 +70,11 @@ Poll this endpoint until `status` is `completed` or `failed`. There's no webhook
 | `creditsUsed` | `integer` | Credits billed for this crawl. |
 | `createdAt` / `completedAt` | `string` (date-time) | `completedAt` is only present once the crawl reaches a terminal state. |
 | `duration` | `number` | Elapsed seconds — `createdAt` to `completedAt` (or to now, if still running). |
+| `expiresAt` | `string` (date-time) | When crawled data is no longer retrievable via this endpoint (observed ~24 hours after `createdAt`). |
 | `next` | `string \| null` | URL to fetch the next page of results, present if the crawl isn't finished or the payload exceeds 10MB. |
 | `data` | `array` | One scrape-result object per page, shaped like [`/v2/scrape`](/api-reference/scrape)'s `data`. |
 
-**Live example.** Polling the crawl started above, a few seconds after it completed:
+Polling the crawl started above, a few seconds after it completed:
 
 ```json
 {
