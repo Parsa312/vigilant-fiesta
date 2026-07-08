@@ -9,7 +9,7 @@ This guide gets you from zero to your first scrape. Every example is shown in cU
 
 Sign up at [firecrawl.dev](https://www.firecrawl.dev) and grab an API key from your dashboard. Keys are prefixed `fc-`.
 
-Store it as an environment variable rather than pasting it into code:
+Store it as an environment variable rather than pasting it into code. This keeps the key out of your source files — so a stray `git add .` can't push it to a public repo. It also lets the same code run unchanged across machines:
 
 ```bash
 export FIRECRAWL_API_KEY="fc-your-api-key"
@@ -24,6 +24,14 @@ echo 'export FIRECRAWL_API_KEY="fc-your-api-key"' >> ~/.bashrc && source ~/.bash
 # zsh (default on macOS since Catalina)
 echo 'export FIRECRAWL_API_KEY="fc-your-api-key"' >> ~/.zshrc && source ~/.zshrc
 ```
+
+Verify it's set before moving on:
+
+```bash
+echo $FIRECRAWL_API_KEY
+```
+
+This should print your key. If it's blank, make sure you're running this command in the same terminal session where you set it — a new tab or window won't inherit it unless it's in your shell's startup file.
 
 
 ## 2. Install the SDK
@@ -47,6 +55,7 @@ npm install firecrawl
 <CodeGroup>
 
 ```python Python
+import os
 from firecrawl import Firecrawl
 
 app = Firecrawl(api_key=os.environ["FIRECRAWL_API_KEY"])
@@ -86,7 +95,7 @@ Firecrawl renders the page (including any JavaScript) and returns clean Markdown
   "data": {
     "markdown": "# Power AI agents with clean web data\n\nThe complete toolkit to search, scrape, and interact with the web at scale...",
     "metadata": {
-      "title": "Firecrawl - The context API to search, scrape, and interact with the web at scale.",
+      "title": "Firecrawl - The context API to search, scrape, and interact with the web at scale. 🔥",
       "description": "Firecrawl is the context API to search, scrape, and interact with the web at scale...",
       "sourceURL": "https://firecrawl.dev",
       "statusCode": 200
@@ -96,7 +105,7 @@ Firecrawl renders the page (including any JavaScript) and returns clean Markdown
 ```
 
 <Note>
-  The `markdown` and `metadata` values above are trimmed for readability; a real response includes the full page content. This example was captured from a live call to `/v2/scrape` while writing this doc.
+  Example response shape, based on a real `/v2/scrape` call against firecrawl.dev. The `markdown` shown starts at the page's main heading, skipping the promotional banner that appears first in the actual response. The `metadata` fields shown are a relevant subset — the real response includes dozens of additional fields (SEO tags, tracking identifiers, cache info) omitted here for readability.
 </Note>
 
 ## Next steps

@@ -69,24 +69,24 @@ Authorization: Bearer fc-your-api-key
 
 ### Example: live response
 
-The example below is a real, unmodified response captured from `POST /v2/scrape` for `https://firecrawl.dev` with `formats: ["markdown"]` (Markdown truncated for length):
+The example below shows the response shape for `POST /v2/scrape` on `https://firecrawl.dev` with `formats: ["markdown"]`. The `markdown` shown starts at the page's main heading, skipping the promotional banner that appears first in the actual response, and is truncated for length. The `metadata` fields shown are a relevant subset — the real response includes dozens of additional SEO and tracking fields, omitted here for readability.
 
-```json
+\`\`\`json
 {
   "success": true,
   "data": {
     "markdown": "# Power AI agents with clean web data\n\nThe complete toolkit to search, scrape, and interact with the web at scale. [It's also open source.](https://github.com/firecrawl/firecrawl)\n\n...",
     "metadata": {
-      "title": "Firecrawl - The context API to search, scrape, and interact with the web at scale.",
+      "title": "Firecrawl - The context API to search, scrape, and interact with the web at scale. 🔥",
       "description": "Firecrawl is the context API to search, scrape, and interact with the web at scale. Turn any source into clean Markdown or structured data your agents can ship with.",
-      "og:site_name": "Firecrawl - The context API to search, scrape, and interact with the web at scale.",
+      "og:site_name": "Firecrawl - The context API to search, scrape, and interact with the web at scale. 🔥",
       "sourceURL": "https://firecrawl.dev",
       "url": "https://www.firecrawl.dev/",
       "statusCode": 200
     }
   }
 }
-```
+\`\`\`
 
 ## Error handling
 

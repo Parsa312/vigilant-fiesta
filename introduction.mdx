@@ -3,11 +3,10 @@ title: Introduction
 description: What Firecrawl is and how this documentation sample is organized
 ---
 
-Use Firecrawl to get web data into a accessible format for AI agents and LLMs. You can use the Firecrawl API to:
+Use Firecrawl to get web data into an accessible format for AI agents and LLMs. You can use the Firecrawl API to:
 
-- Search the web
 - Scrape any page
-- Interact with any page
+- Crawl an entire site
 
  The API takes care of:
 
@@ -22,14 +21,9 @@ In return, you get clean data back in the following formats:
 - Screenshots
 
 <Note>
-  This is an independent documentation sample created by Parsa Shahbodaghi to document code that can be easily verified. 
-  He made two changes to the documentation as a result of his testing:
-  
-  - The Python SDK returns an error if you an access token isn't provided. I was able to make calls using other SDKs, so this seems Python SDK specific.
-  - I changed the procedures to have customers store their credentials as environment variables.
+  This is an independent documentation sample created by Parsa Shahbodaghi to demonstrate an approach to Firecrawl's developer docs, verified against the live API. It is not official Firecrawl documentation and is not affiliated with or endorsed by Firecrawl.
 
-  This sample is only reflective of Parsa's code testing abilities. Creating an information architecture more broadly requires a deep understanding of the product and stakeholder and customer goals.
-
+  Testing surfaced one real finding: Firecrawl's documented keyless mode — calling `Firecrawl()` with no API key, which caps you at lower rate limits than an authenticated call — works correctly in the REST API and the Node SDK. However, the Python SDK throws `ValueError: No API key provided` under the same conditions. Every code example in this sample reads the API key from an environment variable rather than showcasing keyless access.
 </Note>
 
 ## What's in this sample

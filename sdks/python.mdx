@@ -63,6 +63,8 @@ for page in job.data:
 `crawl()` starts the job and polls `GET /v2/crawl/{id}` under the hood, returning once the crawl reaches a terminal state. If you'd rather manage polling yourself — for example, to update a progress bar — start the job and poll manually:
 
 ```python
+import time
+
 job = app.start_crawl("https://docs.firecrawl.dev", limit=50)
 
 status = app.get_crawl_status(job.id)

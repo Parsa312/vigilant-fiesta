@@ -26,7 +26,6 @@ POST https://api.firecrawl.dev/v2/crawl
 | `crawlEntireDomain` | `boolean` | `false` | When `true`, follows sibling/parent links too, not just deeper child paths. |
 | `allowExternalLinks` | `boolean` | `false` | Allow following links off the starting domain. |
 | `allowSubdomains` | `boolean` | `false` | Allow following links to subdomains of the starting domain. |
-| `ignoreRobotsTxt` | `boolean` | `false` | Ignore `robots.txt` rules. |
 | `delay` | `integer` (ms) | — | Delay between requests to the same site. |
 | `maxConcurrency` | `integer` | — | Cap on concurrent page scrapes for this crawl. |
 | `scrapeOptions` | `object` | — | Any [`/v2/scrape`](/api-reference/scrape) parameter (`formats`, `onlyMainContent`, `waitFor`, etc.), applied to every page the crawl visits. |
@@ -140,7 +139,7 @@ job = app.crawl(
 )
 
 for page in job.data:
-    print(page.metadata.sourceURL)
+    print(page.metadata.source_url)
 ```
 
 </CodeGroup>
