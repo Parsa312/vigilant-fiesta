@@ -23,7 +23,7 @@ In return, you get clean data back in the following formats:
 <Note>
   This is an independent documentation sample created by Parsa Shahbodaghi to demonstrate an approach to Firecrawl's developer docs, verified against the live API. It is not official Firecrawl documentation and is not affiliated with or endorsed by Firecrawl.
 
-  Testing surfaced one interesting finding along the way: Firecrawl's documented keyless mode — calling `Firecrawl()` with no API key, which caps you at lower rate limits than an authenticated call — worked correctly in the REST API and Node SDK, but the Python SDK initially threw `ValueError: No API key provided` under the same conditions. Retesting later, that's no longer reproducible, suggesting it's already been resolved. Every code example in this sample still reads the API key from an environment variable regardless, since that's good practice on its own.
+  Testing surfaced one interesting finding along the way: Firecrawl's documented keyless mode — calling `Firecrawl()` with no API key, which caps you at lower rate limits than an authenticated call — worked correctly in the REST API and Node SDK, but the Python SDK initially threw `ValueError: No API key provided` under the same conditions. Retesting later, that's no longer reproducible, suggesting it's already been resolved.
 </Note>
 
 ## What's in this sample
